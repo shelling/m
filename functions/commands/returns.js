@@ -1,4 +1,5 @@
 const lib = require('lib')({token: process.env.STDLIB_TOKEN});
+const client = require('../../utils/metabase.js');
 const metabase = {
     email: process.env.METABASE_USER,
     password: process.env.METABASE_PASS
@@ -23,11 +24,7 @@ const metabase = {
 module.exports = (user, channel, text = '', command = {}, botToken = null, callback) => {
 
     var superagent = require('superagent');
-    superagent
-        .post("http://metabase-757206338.us-west-2.elb.amazonaws.com/api/session")
-        .send(metabase)
-        .set('Content-Type', 'application/json')
-        .end(function(err, res) {
+    client.signin(metabase, function(err, res) {
             if (res.status === 200) {
                 superagent
                     .post("http://metabase-757206338.us-west-2.elb.amazonaws.com/api/card/5/query/json")
