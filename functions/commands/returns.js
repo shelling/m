@@ -29,7 +29,9 @@ module.exports = (user, channel, text = '', command = {}, botToken = null, callb
                     client.card({ id: JSON.parse(res.text).id, card: 5 }, function(err, res) {
                         callback(null, {
                             response_type: 'in_channel',
-                            text: `hello, <@${user}>...\nyou said: ${text}, ${res.text}`
+                            text: JSON.parse(res.text).map(function(e) {
+                                return `*${e.franchise_name}*:${e.amount}\n`
+                            }).join(' ')
                         });
                     })
             } else {
