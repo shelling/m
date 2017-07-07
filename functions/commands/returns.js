@@ -22,23 +22,23 @@ const metabase = {
 * @returns {object}
 */
 module.exports = (user, channel, text = '', command = {}, botToken = null, callback) => {
-
-    var superagent = require('superagent');
-    client.signin(metabase, function(err, res) {
-            if (res.status === 200) {
-                    client.card({ id: JSON.parse(res.text).id, card: 5 }, function(err, res) {
-                        callback(null, {
-                            response_type: 'in_channel',
-                            text: JSON.parse(res.text).map(function(e) {
-                                return `*${e.franchise_name}*:${e.amount}\n`
-                            }).join(' ')
-                        });
-                    })
-            } else {
+    client.signin(
+        metabase,
+        function(err, res) {
+            client.card({ id: res.id, card: 5 }, function(err, res) {
                 callback(null, {
                     response_type: 'in_channel',
-                    text: `Here are the top franchises with the most returns for the past week,\n ${res.text}`
-                })
-            }
-        })
+                    text: "Here are the top franchises with the most returns for the past week,\n " + JSON.parse(res.text).map(function(e) {
+                        return `*${e.franchise_name}*:${e.amount}\n`
+                    }).join(' ')
+                });
+            })
+        },
+        function(err, res) {
+            callback(null, {
+                response_type: "in_channel",
+                text: JSON.stringify(res)
+            })
+        }
+    )
 };
