@@ -20,7 +20,30 @@ module.exports = (user, channel, text = '', event = {}, botToken = null, callbac
   // Only send a response to certain messages
   if (text.match(/hey|hello|hi|sup/i)) {
     callback(null, {
-      text: `Hey there! <@${user}> said ${text}`
+      text: `Hey <@${user}>. Ask me questions about these metrics`,
+        attachments: [
+            {
+                "text": "metrics",
+                "fallback": "You are unable to get metrics",
+                "callback_id" : "1",
+                "color": "#3AA3E3",
+                "attachment_type": "default",
+                "actions": [
+                    {
+                        name: "returns",
+                        text: "returns",
+                        type: "button",
+                        value: "returns",
+                    },
+                    {
+                        name: "orders",
+                        text: "orders",
+                        type: "button",
+                        value: "orders",
+                    }
+                ]
+            }
+        ]
     });
   } else {
     callback(null, {});
