@@ -1,4 +1,5 @@
 const lib = require('lib')({token: process.env.STDLIB_TOKEN});
+const client = require('../../utils/metabase.js');
 const metabase = {
     email: process.env.METABASE_USER,
     password: process.env.METABASE_PASS
@@ -21,30 +22,23 @@ const metabase = {
 * @returns {object}
 */
 module.exports = (user, channel, text = '', command = {}, botToken = null, callback) => {
-
-    var superagent = require('superagent');
-    superagent
-        .post("http://metabase-757206338.us-west-2.elb.amazonaws.com/api/session")
-        .send(metabase)
-        .set('Content-Type', 'application/json')
-        .end(function(err, res) {
-            if (res.status === 200) {
-                superagent
-                    .post("http://metabase-757206338.us-west-2.elb.amazonaws.com/api/card/6/query/json")
-                    .set('X-Metabase-Session', `${JSON.parse(res.text).id}`)
-                    .end(function(err, res) {
-
-                        callback(null, {
-                            response_type: 'in_channel',
-                            text: `Here are the top 30 franchises with the most orders for the past week,\n ${res.text} `
-                        });
-
-                    })
-            } else {
+    client.signin(
+        metabase,
+        function(err, res) {
+            client.card({ id: res.id, card: 6 }, function(err, res) {
                 callback(null, {
                     response_type: 'in_channel',
-                    text: `${res.text}`
-                })
-            }
-        })
+                    text: "Here are the top franchises with the most orders for the past week,\n " + JSON.parse(res.text).map(function(e) {
+                        return `*${e.franchises_name}*:${e.amount}\n`
+                    }).join(' ')
+                });
+            })
+        },
+        function(err, res) {
+            callback(null, {
+                response_type: "in_channel",
+                text: JSON.stringify(res)
+            })
+        }
+    )
 };
