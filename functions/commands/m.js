@@ -28,6 +28,7 @@ module.exports = (user, channel, text = '', command = {}, botToken = null, callb
         "average_daily_order" : 13,
         "orders" : 6,
         "shoppers" : 12,
+        "number_of_users_optin_sms" : 15,
     }
 
     const handlers = {
@@ -49,6 +50,11 @@ module.exports = (user, channel, text = '', command = {}, botToken = null, callb
                 return `*${e.Shoppers}*\n`
             }).join(' ')
         },
+        "number_of_users_optin_sms" : function(res) {
+            return JSON.parse(res.text).map(function(e) {
+                return `${e.count}`
+            }).join(",")
+        }
     }
 
     params = text.split(' ')
