@@ -26,16 +26,11 @@ module.exports = (user, channel, text = '', command = {}, botToken = null, callb
     var superagent = require('superagent');
     client.signin(metabase, function(err, res) {
             if (res.status === 200) {
-                superagent
-                    .post("http://metabase-757206338.us-west-2.elb.amazonaws.com/api/card/5/query/json")
-                    .set('X-Metabase-Session', `${JSON.parse(res.text).id}`)
-                    .end(function(err, res) {
-
+                    client.card({ id: JSON.parse(res.text).id, card: 5 }, function(err, res) {
                         callback(null, {
                             response_type: 'in_channel',
                             text: `hello, <@${user}>...\nyou said: ${text}, ${res.text}`
                         });
-
                     })
             } else {
                 callback(null, {

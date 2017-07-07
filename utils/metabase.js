@@ -8,4 +8,10 @@ module.exports = {
         .set('Content-Type', 'application/json')
         .end(callback)
     },
+    card: function(context, callback) {
+        superagent
+        .post(`http://metabase-757206338.us-west-2.elb.amazonaws.com/api/card/${context.card}/query/json`)
+        .set('X-Metabase-Session', `${context.id}`)
+        .end(callback)
+    }
 };
