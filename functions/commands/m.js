@@ -27,6 +27,7 @@ module.exports = (user, channel, text = '', command = {}, botToken = null, callb
         "returns"       : 5,
         "average_daily_order" : 13,
         "orders" : 6,
+        "shoppers" : 12,
     }
 
     const handlers = {
@@ -42,7 +43,12 @@ module.exports = (user, channel, text = '', command = {}, botToken = null, callb
             return "Here are the top franchises with the most orders for the past week,\n " + JSON.parse(res.text).map(function(e) {
                 return `*${e.franchises_name}*:${e.amount}\n`
             }).join(' ')
-        }
+        },
+        "shoppers" : function(res) {
+            return "Here is the total number of shoppers on Linc platform for the past week,\n " + JSON.parse(res.text).map(function(e) {
+                return `*${e.Shoppers}*\n`
+            }).join(' ')
+        },
     }
 
     params = text.split(' ')
