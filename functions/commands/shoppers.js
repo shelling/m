@@ -29,7 +29,7 @@ module.exports = (user, channel, text = '', command = {}, botToken = null, callb
         .set('Content-Type', 'application/json')
         .end(function(err, res) {
             if (res.status === 200) {
-                
+
                 superagent
                     .post("http://metabase-757206338.us-west-2.elb.amazonaws.com/api/card/12/query/json")
                     .set('X-Metabase-Session', `${JSON.parse(res.text).id}`)
@@ -37,7 +37,7 @@ module.exports = (user, channel, text = '', command = {}, botToken = null, callb
 
                         callback(null, {
                             response_type: 'in_channel',
-                            text: `hello, <@${user}>...\nHere are is number of shoppers on Linc platform,\n ${res.text}`
+                            text: `Here are the number of shoppers on Linc platform for the past week,\n ${res.text}`
                         });
 
                     })

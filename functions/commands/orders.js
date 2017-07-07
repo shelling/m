@@ -36,7 +36,7 @@ module.exports = (user, channel, text = '', command = {}, botToken = null, callb
 
                         callback(null, {
                             response_type: 'in_channel',
-                            text: `hello, <@${user}>...\nyou said: ${text}, ${res.text}`
+                            text: `Here are the top 30 franchises with the most orders for the past week,\n ${res.text} `
                         });
 
                     })

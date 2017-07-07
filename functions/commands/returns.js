@@ -37,7 +37,7 @@ module.exports = (user, channel, text = '', command = {}, botToken = null, callb
             } else {
                 callback(null, {
                     response_type: 'in_channel',
-                    text: `${res.text}`
+                    text: `Here are the top franchises with the most returns for the past week,\n ${res.text}`
                 })
             }
         })
