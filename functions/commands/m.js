@@ -26,6 +26,7 @@ module.exports = (user, channel, text = '', command = {}, botToken = null, callb
     const questions = {
         "returns"       : 5,
         "average_daily_order" : 13,
+        "orders" : 6,
     }
 
     const handlers = {
@@ -37,6 +38,11 @@ module.exports = (user, channel, text = '', command = {}, botToken = null, callb
         "average_daily_order" : function(res) {
             return `The Average Daily Order is ${JSON.parse(res.text)[0].counts}`
         },
+        "orders" : function(res) {
+            return "Here are the top franchises with the most orders for the past week,\n " + JSON.parse(res.text).map(function(e) {
+                return `*${e.franchises_name}*:${e.amount}\n`
+            }).join(' ')
+        }
     }
 
     params = text.split(' ')
