@@ -15,7 +15,9 @@ module.exports = {
                 .end(function(err, res) {
                     if (res.status === 200) {
                         session = { id: JSON.parse(res.text).id, timestamp: Date.now() }
-                        callback(null, session)
+                        lib.utils.storage.set("session", session, function(err, session) {
+                            callback(null, session)
+                        })
                     } else {
                         exception(null, res)
                     }
